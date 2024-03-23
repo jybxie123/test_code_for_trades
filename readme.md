@@ -15,7 +15,8 @@ output format:
 ## Run
 please execute the following command:
 ```bash
-g++ your/path/to/test.cpp
-a.out input.csv output.csv
+cd your/path/to/test_code
+g++ test.cpp
+./a.out input.csv output.csv
 ```
 
