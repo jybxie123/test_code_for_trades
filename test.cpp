@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ std::vector<std::vector<std::string>> readCSV(std::string filename) {
 * input: string format of each transaction
 * output: each symbol's trade statements
 */
-int update_trade_info(vector<std::string>& data, std::unordered_map<std::string, Trade>& trades){
+int update_trade_info(vector<std::string>& data, std::map<std::string, Trade>& trades){
     long long currTimeStamp = std::stoi(data[0]);
     long long timeGap = currTimeStamp - trades[data[1]].currTimeStamp;
     if (timeGap > trades[data[1]].maxTimeGap) {
@@ -65,7 +66,7 @@ int update_trade_info(vector<std::string>& data, std::unordered_map<std::string,
     return 0;
 }
 
-int output_csv(string csv_name, std::unordered_map<std::string, Trade>& trades){
+int output_csv(string csv_name, std::map<std::string, Trade>& trades){
     std::ofstream outputFile(csv_name);
     if (!outputFile.is_open()) {
         std::cerr << "Failed to open file for writing.\n";
@@ -87,7 +88,7 @@ int main(int argc, char* argv[]){
     string input = argv[1];
     string output = argv[2];
     std::vector<std::vector<std::string>> data = readCSV(input);
-    std::unordered_map<std::string, Trade> trades;
+    std::map<std::string, Trade> trades;
 
     for (int i = 0; i < data.size(); i++) {
         // search for the trade symbol in the map
@@ -102,7 +103,7 @@ int main(int argc, char* argv[]){
             update_trade_info(data[i], trades);
         }
     }
-
+    
     if (output_csv(output,trades) != 0){
         cout<< "output csv failed"<<endl;
     }else{

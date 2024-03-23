@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <algorithm>
 
@@ -28,7 +28,7 @@ struct Trade {
 * input: string format of each transaction
 * output: each symbol's trade statements
 */
-int update_trade_info(vector<std::string>& data, std::unordered_map<std::string, Trade>& trades){
+int update_trade_info(vector<std::string>& data, std::map<std::string, Trade>& trades){
     long long currTimeStamp = std::stoi(data[0]);
     long long timeGap = currTimeStamp - trades[data[1]].currTimeStamp;
     if (timeGap > trades[data[1]].maxTimeGap) {
@@ -46,7 +46,7 @@ int update_trade_info(vector<std::string>& data, std::unordered_map<std::string,
     return 0;
 }
 
-int output_csv(string csv_name, std::unordered_map<std::string, Trade>& trades){
+int output_csv(string csv_name, std::map<std::string, Trade>& trades){
     std::ofstream outputFile(csv_name);
     if (!outputFile.is_open()) {
         std::cerr << "Failed to open file for writing.\n";
@@ -60,9 +60,15 @@ int output_csv(string csv_name, std::unordered_map<std::string, Trade>& trades){
     return 0;
 }
 
-int main(){
-    std::unordered_map<std::string, Trade> trades;
-    std::ifstream file("input.csv");
+int main(int argc, char* argv[]){
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " <input_filename>, " << " <output_filename>\n";
+        return 1;
+    }
+    string input = argv[1];
+    string output = argv[2];
+    std::map<std::string, Trade> trades;
+    std::ifstream file(input);
     std::string line;
     while (std::getline(file, line)) {
         std::vector<std::string> row;
@@ -83,7 +89,7 @@ int main(){
         }
     }
     // output is much smaller than the input file.
-    if (output_csv("output.csv",trades) != 0){
+    if (output_csv(output,trades) != 0){
         cout<< "output csv failed"<<endl;
     }else{
         cout<< "output csv success"<<endl;
