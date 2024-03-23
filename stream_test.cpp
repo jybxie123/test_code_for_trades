@@ -55,7 +55,7 @@ int output_csv(string csv_name, std::map<std::string, Trade>& trades){
     for (const auto& pair : trades) {
         outputFile << pair.first << ',' << pair.second.maxTimeGap << ','  << pair.second.volume << ','  << pair.second.weightedPriceAvg << ',' << pair.second.maxPrice << std::endl;
     }
-    outputFile.close(); // 关闭文件流
+    outputFile.close();
     std::cout << "Data has been written to output.csv.\n";
     return 0;
 }

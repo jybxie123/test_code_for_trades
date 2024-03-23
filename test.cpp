@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <unordered_map>
 #include <vector>
 #include <algorithm>
 #include <map>
@@ -25,9 +24,11 @@ struct Trade {
     }
 };
 
-// read csvfile
-// this method cannot handle huge files if the csv is bigger than the memory
-// but we can read it line by line in the form of a stream to reduce memory requirements.
+/*
+* read csvfile
+* this method cannot handle huge files if the csv is bigger than the memory
+* but we can read it line by line in the form of a stream to reduce memory requirements.
+*/
 std::vector<std::vector<std::string>> readCSV(std::string filename) {
     std::vector<std::vector<std::string>> data;
     std::ifstream file(filename);
@@ -75,7 +76,7 @@ int output_csv(string csv_name, std::map<std::string, Trade>& trades){
     for (const auto& pair : trades) {
         outputFile << pair.first << ',' << pair.second.maxTimeGap << ','  << pair.second.volume << ','  << pair.second.weightedPriceAvg << ',' << pair.second.maxPrice << std::endl;
     }
-    outputFile.close(); // 关闭文件流
+    outputFile.close();
     std::cout << "Data has been written\n";
     return 0;
 }
